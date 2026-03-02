@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <title>Thêm sách</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+  <h1>➕ Thêm sách mới</h1>
+
+  <form th:action="@{/books/add}"
+        method="post"
+        enctype="multipart/form-data"
+        th:object="${book}">
+
+    <label>Tiêu đề</label><br>
+    <input type="text" th:field="*{title}" required />
+    <br><br>
+
+    <label>Tác giả</label><br>
+    <input type="text" th:field="*{author}" required />
+    <br><br>
+
+    <!-- 🔥 Thêm danh mục -->
+    <label>Danh mục</label><br>
+    <select name="categoryId" required>
+      <option value="">-- Chọn danh mục --</option>
+      <option th:each="c : ${categories}"
+              th:value="${c.id}"
+              th:text="${c.name}">
+      </option>
+    </select>
+    <br><br>
+
+    <label>Ảnh</label><br>
+    <input type="file" name="imageFile" accept="image/*" />
+    <br><br>
+
+    <button type="submit">Lưu</button>
+  </form>
+
+  <br>
+  <a th:href="@{/books}">← Quay lại danh sách</a>
+
+</div>
+
+</body>
+</html>

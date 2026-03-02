@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
 <head>
     <title>Sửa sách</title>
+
+    <!-- GIỮ NGUYÊN CSS -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,24 +57,30 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="form-box">
-    <h1>✏️ Sửa sách</h1>
+<!-- NỘI DUNG ĐƯA VÀO LAYOUT -->
+<div layout:fragment="content">
 
-    <form action="/books/edit" method="post" th:object="${book}">
-        <input type="hidden" th:field="*{id}" />
+    <div class="form-box">
+        <h1>✏️ Sửa sách</h1>
 
-        <label>Tiêu đề</label>
-        <input type="text" th:field="*{title}" required />
+        <form action="/books/edit" method="post" th:object="${book}">
+            <input type="hidden" th:field="*{id}" />
 
-        <label>Tác giả</label>
-        <input type="text" th:field="*{author}" required />
+            <label>Tiêu đề</label>
+            <input type="text" th:field="*{title}" required />
 
-        <button type="submit">Cập nhật</button>
-    </form>
+            <label>Tác giả</label>
+            <input type="text" th:field="*{author}" required />
 
-    <a href="/books">← Quay lại danh sách</a>
+            <button type="submit">Cập nhật</button>
+        </form>
+
+        <a href="/books">← Quay lại danh sách</a>
+    </div>
+
 </div>
 
 </body>

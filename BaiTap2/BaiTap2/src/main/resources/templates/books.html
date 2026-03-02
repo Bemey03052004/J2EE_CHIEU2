@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý sách</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            background: #f4f6f9;
+        }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #334155;
+            color: white;
+        }
+
+        .main {
+            margin-left: 220px;
+            padding: 30px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .add-btn {
+            padding: 10px 18px;
+            background: linear-gradient(to right, #4CAF50, #2e7d32);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        thead {
+            background: linear-gradient(to right, #2196F3, #1976D2);
+            color: white;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        img {
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .action a {
+            margin: 0 5px;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .edit {
+            background: #ff9800;
+        }
+
+        .edit:hover {
+            background: #fb8c00;
+        }
+
+        .delete {
+            background: #f44336;
+        }
+
+        .delete:hover {
+            background: #e53935;
+        }
+
+        /* Badge danh mục */
+        .category-badge {
+            background: #e3f2fd;
+            padding: 6px 12px;
+            border-radius: 15px;
+            color: #1565C0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>📚 Admin</h2>
+    <a href="/books">📖 Quản lý sách</a>
+    <a href="#">📊 Thống kê</a>
+    <a href="#">⚙ Cài đặt</a>
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <h1>Danh sách sách</h1>
+
+        <div style="display:flex; gap:10px;">
+            <a th:href="@{/categories}" class="category-btn">📂 Thêm danh mục</a>
+            <a th:href="@{/books/add}" class="add-btn">➕ Thêm sách</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ảnh</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Danh mục</th> <!-- THÊM CỘT -->
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}"></td>
+
+            <td>
+                <img th:if="${book.image != null}"
+                     th:src="@{/images/{img}(img=${book.image})}"
+                     width="80"
+                     height="110"
+                     style="object-fit: cover;" />
+            </td>
+
+            <td th:text="${book.title}" style="font-weight:600;"></td>
+            <td th:text="${book.author}" style="color:#666;"></td>
+
+            <!-- HIỂN THỊ DANH MỤC -->
+            <td>
+                <span th:if="${book.category != null}"
+                      class="category-badge"
+                      th:text="${book.category.name}">
+                </span>
+
+                <span th:if="${book.category == null}" style="color:#999;">
+                    Chưa có
+                </span>
+            </td>
+
+            <td class="action">
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" class="edit">Sửa</a>
+                <a th:href="@{/books/delete/{id}(id=${book.id})}"
+                   class="delete"
+                   onclick="return confirm('Bạn có chắc muốn xóa?')">
+                    Xóa
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
